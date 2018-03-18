@@ -44,3 +44,6 @@ plt.axis([0, 2, 0, 15])
 # save_fig("generated_data_plot")
 plt.show()
 ```
+
+## Gradient Descent
+Generic optimization algorithm
