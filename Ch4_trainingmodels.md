@@ -64,7 +64,7 @@ Equation on p117 of book
 - Issues with gradient descent are that it will find a local minimum if the gradient descent is not bowl shaped, BUT MSE cost functions for Linear Regression model happens to be a convex function– so no local minima. So GD is guaranteed to approach abritrarily close to the learning global minimum. 
 
 *An implementation of this algorithm*
-```
+```python
 eta = 0.1  # learning rate
 n_iterations = 100
 m = 100
