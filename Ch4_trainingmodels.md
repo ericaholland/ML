@@ -47,3 +47,17 @@ plt.show()
 
 ## Gradient Descent
 Generic optimization algorithm
+
+GD tweaks parameters iteratively in order to minimize a cost function– think of being on a hill in dense fog and wanted to get down to the bottom, you would follow the steepest slopde down. GD measues the local gradient of the error functio with regards to theta. 
+
+- *learning paramater* hyperparameter determines the sizes of the steps. Having the correct step size is important so you don't just skip over the the min point
+
+- Issues with gradient descent are that it will find a local minimum if the gradient descent is not bowl shaped, BUT MSE cost functions for Linear Regression model happens to be a convex function– so no local minima. So GD is guaranteed to approach abritrarily close to the learning global minimum. 
+
+- To use gradient descent you need to compute the gradient of the cost funtion with regards to each model parameter theta (subscript j) (like how much the cost function changes if you change that param just a bit). This is a *partial derivative* and it calculates the gradient at each step.
+
+-   You can do these in batches
+
+Equation on p117 of book 
+[gives the gradient vector which points uphill, so just go in the opposite direction which is done by subtracting the gradient vector form theta]. Multiply the gradient vector by n to determine the size of the step. 
+
