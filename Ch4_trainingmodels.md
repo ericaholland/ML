@@ -155,3 +155,73 @@ The algo's progress in a param space is less erratic than with stochastic GD, es
 ## Polynomial Regression
 For when you have non linear data but still can fit it using a linear model... Just add powers of each feature as new features, then train a linear model on this extended set of features.
 
+```python
+import numpy as np
+import numpy.random as rnd
+import matplotlib.pyplot as plt
+
+np.random.seed(42)
+
+m = 100
+X = 6 * np.random.rand(m, 1) - 3
+y = 0.5 * X**2 + X + 2 + np.random.randn(m, 1)
+
+
+from sklearn.preprocessing import PolynomialFeatures
+poly_features = PolynomialFeatures(degree=2, include_bias=False)  # changing the degrees here. Currently quadratic.
+X_poly = poly_features.fit_transform(X)
+X[0]
+X_poly[0]
+lin_reg = LinearRegression()
+lin_reg.fit(X_poly, y)
+lin_reg.intercept_, lin_reg.coef_
+
+X_new=np.linspace(-3, 3, 100).reshape(100, 1)
+X_new_poly = poly_features.transform(X_new)
+y_new = lin_reg.predict(X_new_poly)
+plt.plot(X, y, "b.")
+plt.plot(X_new, y_new, "r-", linewidth=2, label="Predictions")
+plt.xlabel("$x_1$", fontsize=18)
+plt.ylabel("$y$", rotation=0, fontsize=18)
+plt.legend(loc="upper left", fontsize=14)
+plt.axis([-3, 3, 0, 10])
+plt.show()
+```
+As you increase the degrees, the higher degrees will lead to overfitting.
+#### So how do you decide how complex the model should be?
+How does is preform on training vs test data?
+- If it preforms well on training data, but generalizes poorly to according to cross-validation metrics (ch 2) then the model is overfitting. 
+- If it preforms poorly on both it's underfitting. 
+
+Look at the *learning curves* (these are plots of model's preformance on the training and validation set as a function of the training set size (or the training iteration). 
+- To generate plots, train the model several times on different sized subsets of teh training set. 
+
+*This codes defines a function that plots the learning curves of a model given some training data:*
+```python
+from sklearn.metrics import mean_squared_error
+from sklearn.model_selection import train_test_split
+import matplotlib.pyplot as plt
+import numpy as np
+
+def plot_learning_curves(model, X, y):
+    X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, random_state=10)
+    train_errors, val_errors = [], []
+    for m in range(1, len(X_train)):
+        model.fit(X_train[:m], y_train[:m])
+        y_train_predict = model.predict(X_train[:m])
+        y_val_predict = model.predict(X_val)
+        train_errors.append(mean_squared_error(y_train_predict, y_train[:m]))
+        val_errors.append(mean_squared_error(y_val_predict, y_val))
+
+    plt.plot(np.sqrt(train_errors), "r-+", linewidth=2, label="train")
+    plt.plot(np.sqrt(val_errors), "b-", linewidth=3, label="val")
+    plt.legend(loc="upper right", fontsize=14)   # not shown in the book
+    plt.xlabel("Training set size", fontsize=14) # not shown
+    plt.ylabel("RMSE", fontsize=14)              # not shown
+
+    lin_reg = LinearRegression()
+    plot_learning_curves(lin_reg, X, y)
+    plt.axis([0, 80, 0, 3])  # not shown in the book
+
+    plt.show()  # not shown
+    ```
