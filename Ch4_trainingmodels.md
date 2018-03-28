@@ -12,6 +12,18 @@ yhat = [hypothesis funcion, using model params, theta]*[x, the instance's featur
 - use Root Mean Square Error (RMSE) as preformance measure for it. So to train a LR model, you need to find the value of theta that minimizes RMSE 
 (although in practice you can use MSE)
 
+*Comparison of algorithms for Linear Regression*
+
+Algo| Large *m* | Out-of-core support | Large *n* | Hyperparams | Scaling required | Scikit-Learn 
+|--|--|--|--|--|--|--|
+|**Normal equation** | Fast | No | Slow | 0 | No | LinearRegresion|
+|**Batch GD**| Slow | No | Fast| 2 | Yes | n/a |
+|**Stochastics GD** | Fast | Yes | Fast | ≥2 | Yes | SGDRegressor |
+|**Mini-batch GD**| Fast | Yes | Fast | ≥2 | Yes | SGDRegressor |
+
+*m* is number of training instances and *n* is number of features. 
+There is almost no difference after training; all of them end up with similar models and make predictions the same way.
+
 ### Normal equation
 Closed form solution to find value that minimizes theta
 
@@ -48,11 +60,10 @@ plt.show()
 ## Gradient Descent
 Generic optimization algorithm
 
-|Type of GD|Description|
----------
-|Batch GD| Computes gradients based on full training set | 
-|Stochastic GD| Computes based off just one random instance | better for large sets, but slightly less accurate |
-|Mini-batch GD| Computes gradients on small random sets of instances | better than stochastics bc you can get a preformance boost from hardware optimization |
+|Batch GD|Stochastic GD|Mini-Batch GD|
+|--|--|--|
+|Computes gradients based on full training set|Computes based off just one random instance |Computes gradients on small random sets of instances |
+||better for large sets, but slightly less accurate|better than stochastic bc you can get a preformance boost from hardware optimization|
 
 GD tweaks parameters iteratively in order to minimize a cost function– think of being on a hill in dense fog and wanted to get down to the bottom, you would follow the steepest slopde down. GD measues the local gradient of the error functio with regards to theta. 
 
@@ -138,4 +149,9 @@ sgd_reg.fit(X, y.ravel())
 
 ### Mini-Batch Gradient Descent
 Just computes the gradients on small random sets of instances called *mini-batches*. 
+
+The algo's progress in a param space is less erratic than with stochastic GD, esp with fairly large mini-batches, so this method will get closer to global minimum. But it is harder to esape local minima
+
+## Polynomial Regression
+For when you have non linear data but still can fit it using a linear model... Just add powers of each feature as new features, then train a linear model on this extended set of features.
 
