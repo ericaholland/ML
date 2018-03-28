@@ -48,6 +48,12 @@ plt.show()
 ## Gradient Descent
 Generic optimization algorithm
 
+|Type of GD|Description|
+---------
+|Batch GD| Computes gradients based on full training set | 
+|Stochastic GD| Computes based off just one random instance | better for large sets, but slightly less accurate |
+|Mini-batch GD| Computes gradients on small random sets of instances | better than stochastics bc you can get a preformance boost from hardware optimization |
+
 GD tweaks parameters iteratively in order to minimize a cost function– think of being on a hill in dense fog and wanted to get down to the bottom, you would follow the steepest slopde down. GD measues the local gradient of the error functio with regards to theta. 
 
 - *learning paramater* hyperparameter determines the sizes of the steps. Having the correct step size is important so you don't just skip over the the min point
@@ -127,8 +133,9 @@ To preform Linear Regression using SGD with Scikit-Learn, use the SGDRegressor c
 from sklearn.linear_model import SGDRegressor
 sgd_reg = SGDRegressor(max_iter=50, penalty=None, eta0=0.1, random_state=42)
 sgd_reg.fit(X, y.ravel())
-```
+``` 
 --> gives you an intercept and coef very cose to one returned by Normal equation.
 
 ### Mini-Batch Gradient Descent
+Just computes the gradients on small random sets of instances called *mini-batches*. 
 
