@@ -84,6 +84,51 @@ If it is too low, it will not have reached the optimal solution when the algorit
 ### Stochastic Gradient Descent
 Stochastic Gradient Descent picks a random instance in the training set at every step and compute gradients based off only that instace (as oppsoed to all of the training data). This makes it fast because there is less data to manipulate at every step and makes it possible to train on huge training sets because only one instance needs to be in the memory at each iteration. 
 
-However, it isn't as regular and will continue to bounce up and down, decreasing only on average. So when the algo stops, the final param values are good, but not optimal.
+**Cons:**
+However, it isn't as regular and will continue to bounce up and down, decreasing only on average. So when the algo stops, the final param values are good, but not optimal. It never settles at the true minimum
 
-120
+**Pros:**
+If the cost fuction is irregular, it this up and down can help the algorithm jump out of a local minimum. 
+
+To deal with this, gradually reduce the learning rate. By starting out with large steps, it won't take as long and you escape local minima, as they get smaller is settles on the global minimum. This is *simulated annealing*. The function that determines the learning rate is the *learning schedule*.
+
+*Implementing Stochastic Gradient Descent using a simple learning schedule:*
+```python
+def learning_schedule(t):
+    return t0 / (t + t1)
+
+theta = np.random.randn(2,1)  # random initialization
+
+for epoch in range(n_epochs):
+    for i in range(m):
+        if epoch == 0 and i < 20:                    # not shown in the book
+            y_predict = X_new_b.dot(theta)           # not shown
+            style = "b-" if i > 0 else "r--"         # not shown
+            plt.plot(X_new, y_predict, style)        # not shown
+        random_index = np.random.randint(m)
+        xi = X_b[random_index:random_index+1]
+        yi = y[random_index:random_index+1]
+        gradients = 2 * xi.T.dot(xi.dot(theta) - yi)
+        eta = learning_schedule(epoch * m + i)
+        theta = theta - eta * gradients
+        theta_path_sgd.append(theta)                 # not shown
+
+plt.plot(X, y, "b.")                                 # not shown
+plt.xlabel("$x_1$", fontsize=18)                     # not shown
+plt.ylabel("$y$", rotation=0, fontsize=18)           # not shown
+plt.axis([0, 2, 0, 15])                              # not shown
+save_fig("sgd_plot")                                 # not shown
+plt.show()                                           # not shown
+```
+We iterate by rounds of *m* iterations. Each round is an *epoch*. So this ^ code goes through the training set 50x.
+
+To preform Linear Regression using SGD with Scikit-Learn, use the SGDRegressor class which defaults to optimizing the squarred error cost function. The following runs 50 epochs, starting with a learning rate of eta=0.1, using the default learning schedule and doesn't use any regularization. 
+```python
+from sklearn.linear_model import SGDRegressor
+sgd_reg = SGDRegressor(max_iter=50, penalty=None, eta0=0.1, random_state=42)
+sgd_reg.fit(X, y.ravel())
+```
+--> gives you an intercept and coef very cose to one returned by Normal equation.
+
+### Mini-Batch Gradient Descent
+
