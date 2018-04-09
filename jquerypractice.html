@@ -1,0 +1,58 @@
+<!-- Just a photo displayed
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>title</title>
+</head>
+<body>
+
+<div id="images">
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
+
+<script>
+    $(document).ready(function(){       /* runs code once document is loaded  */
+        var image="http://www.patagonia.com/static/on/demandware.static/-/Library-Sites-PatagoniaShared/default/dw7b849462/images/careers/1400x655_Miciu_e_0081.jpg";
+        $("#images").html("<img src='"+image+"'>");  /* puts image inside <div id="images"></div> */
+
+    });
+</script>
+
+
+
+</body>
+</html>
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>title</title>
+</head>
+<body>
+
+
+<div id="input">
+    Enter a location: <input type="text" id="location"><button type="button" class="btn btn-primary" id="sub">Click me.</button>
+</div>
+
+<div id="map">
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
+<script>
+    $("#sub").click(function(){   /* when #sub is clicked, run this code*/
+
+        var place=$("#location").val();         /*gets the value of the input box*/
+        var url="https://maps.googleapis.com/maps/api/staticmap?center="+place+"&zoom=13&size=600x300&maptype=roadmap";
+        var map="<img src='"+url+"'>";       /* html for showing the map in an img tag  */
+        $("#map").html(map);   /* puts "map" in the map div   */
+
+    });
+</script>
+
+</body>
+</html>

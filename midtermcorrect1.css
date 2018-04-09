@@ -1,0 +1,12 @@
+.bar > div {
+    border: 1px black solid;
+    float: left;
+    clear: left;
+}
+.bar {
+    float: right;
+}
+
+.foo {
+    border: black 1px solid;
+}
